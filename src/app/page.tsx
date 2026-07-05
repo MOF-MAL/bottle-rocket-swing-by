@@ -4,10 +4,8 @@
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls } from '@react-three/drei';
 import { Physics, RigidBody } from '@react-three/rapier';
-
-import { Rocket } from '@/components/Rocket';
-// これから作るPlanetコンポーネントをインポートしておく
-import { Planet } from '@/components/Planet'; 
+import { RocketModel } from '@/components/game/RocketModel';
+import { PlanetModels } from '@/components/game/PlanetModel'; 
 
 export default function Home() {
   return (
@@ -22,13 +20,11 @@ export default function Home() {
         */}
         <Physics gravity={[0, 0, 0]}>
           
-          {/* ロケットを配置（後でZ軸をロックします） */}
-          <Rocket />
-
-          {/* 惑星を配置（X: 10, Y: 10 の位置に置きます）
-            ※この位置情報を後でロケット側の引力計算に使います
-          */}
-          <Planet position={[10, 10, 0]} />
+          {/* ロケットを配置 */}
+          <RocketModel />
+          
+          {/* 惑星を配置 */}
+          <PlanetModels />
 
         </Physics>
 
