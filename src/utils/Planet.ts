@@ -27,14 +27,14 @@ export const createPlanets = () => {
     const numOfPlanets = 5; // 惑星の数を指定
     for (let i = 0; i < numOfPlanets; i++) {
         const planetProps: PlanetProps = {
-            mass: Math.random() * 10000 + 1000, // 1000から11000の間のランダムな質量
-            radius: Math.random() * 3 + 1, // 1から3の間のランダムな半径
+            mass: Math.random() * 100000000 + 10000000, // 1000万から1億の間のランダムな質量
+            radius: Math.random() * 3 + 3, // 3から6の間のランダムな半径
             color: `hsl(${Math.random() * 360}, 100%, 50%)`, // ランダムな色
         };
         const planet: Planet = {
             planetProps: planetProps,
             planetState: {
-                position: new Vector3(Math.random() * 100 - 50, Math.random() * 100 - 50, 0), // ランダムな位置
+                position: new Vector3(Math.random() * 80 - 40, Math.random() * 80 - 40, 0), // ランダムな位置
                 rotation: Quaternion.identity,
                 linearVelocity: Vector3.zero,
                 angularVelocity: Vector3.zero,

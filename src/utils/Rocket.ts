@@ -4,7 +4,6 @@ import { useGameStore } from '@/store/gameStore';
 import { RapierRigidBody } from '@react-three/rapier';
 
 export interface Rocket {
-  rbRef: React.RefObject<RapierRigidBody | null>;
   rocketTypes: RocketTypes;
   rocketProps: RocketProps;
   rocketState: RocketState;
@@ -42,7 +41,7 @@ export interface RocketState {
 }
 
 // ロケットを作る関数
-export const createRocket = ({ bodyType, hardness, nozzleType }: RocketTypes, rbRef: React.RefObject<RapierRigidBody | null>): Rocket => {
+export const createRocket = ({ bodyType, hardness, nozzleType }: RocketTypes): Rocket => {
   // --- ロケットのパラメータを計算する ---
   const volume: number = (() => {
     if (bodyType === 'Small') return 100;
@@ -52,9 +51,9 @@ export const createRocket = ({ bodyType, hardness, nozzleType }: RocketTypes, rb
   })();
 
   const mass: number = (() => {
-    if (hardness === 'Soft') return 1;
-    if (hardness === 'Medium') return 2;
-    if (hardness === 'Hard') return 3;
+    if (hardness === 'Soft') return 0.1;
+    if (hardness === 'Medium') return 0.15;
+    if (hardness === 'Hard') return 0.2;
     return 1; // デフォルト値
   })();
 
@@ -102,7 +101,6 @@ export const createRocket = ({ bodyType, hardness, nozzleType }: RocketTypes, rb
   };
 
   const rocket: Rocket = {
-    rbRef,
     rocketTypes,
     rocketProps,
     rocketState
@@ -111,21 +109,24 @@ export const createRocket = ({ bodyType, hardness, nozzleType }: RocketTypes, rb
 };
 
 // ロケットの状態を更新する関数
-export const updateRocketState = () => {
+export const updateRocketState = (rbRef: React.RefObject<RapierRigidBody | null>) => {
   const launched = useGameStore.getState().launched;
   if (!launched) return;
 
   const rocket = useGameStore.getState().rocket;
   if (!rocket || !rocket.rocketState) return;
 
-  const { position, rotation, linearVelocity, angularVelocity } = PhysicsCharactor(rocket.rbRef);
+  const { position, rotation, linearVelocity, angularVelocity } = PhysicsCharactor(rbRef);
   // ここにロケットの状態を更新する処理を追加する
   let force = Vector3.zero;
   for (const planet of useGameStore.getState().planets) {
+    if (!planet.planetState) {
+      continue; // 惑星の状態が存在しない場合はスキップ
+    }
     const planetPos = planet.planetState.position;
     const rVec = Vector3.sub(planetPos, position);
     const r = rVec.magnitude;
-    const G = 6.67430;
+    const G = 6.67430 * Math.pow(10, -9.5); // 万有引力定数
     const F = (G * planet.planetProps.mass * rocket.rocketState.curMass) / (r * r);
     force = Vector3.add(force, Vector3.mul(F, rVec.normalized));
   }

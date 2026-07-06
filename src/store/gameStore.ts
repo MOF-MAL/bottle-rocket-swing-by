@@ -14,7 +14,7 @@ interface GameState {
 }
 
 export const useGameStore = create<GameState>((set) => ({
-    launched: false,
+    launched: true,
     LaunchRocket: () => set((state) => ({ launched: true })),
     // --- 使用できるようになってから、ロケットを作る関数を呼び出す ---
     rocket: null,

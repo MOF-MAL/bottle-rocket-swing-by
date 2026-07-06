@@ -1,6 +1,5 @@
 'use client';
 
-import { useRef, ReactNode } from 'react';
 import { RigidBody, RapierRigidBody } from '@react-three/rapier';
 import { Vector3, Quaternion } from '@/types/math';
 
@@ -15,7 +14,6 @@ export interface PhysicsCharactor {
     SetRotation(rotation: Quaternion): void;
     SetLinearVelocity(velocity: Vector3): void;
     SetAngularVelocity(velocity: Vector3): void;
-    rbRef: React.RefObject<RapierRigidBody | null>;
 }
 
 export const PhysicsCharactor = (rbRef: React.RefObject<RapierRigidBody | null>): PhysicsCharactor => {
@@ -90,8 +88,6 @@ export const PhysicsCharactor = (rbRef: React.RefObject<RapierRigidBody | null>)
         SetAngularVelocity(velocity: Vector3) {
             if (!rbRef.current) return;
             rbRef.current.setAngvel({ x: velocity.x, y: velocity.y, z: velocity.z }, true);
-        },
-        
-        rbRef: rbRef
+        }
     }
 };
