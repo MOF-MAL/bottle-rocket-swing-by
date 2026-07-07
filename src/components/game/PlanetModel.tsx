@@ -2,13 +2,14 @@
 'use client';
 
 import { RigidBody } from '@react-three/rapier';
-import { Vector3, Quaternion } from '@/types/math';
-import { Planet, PlanetProps, createPlanets } from '@/utils/Planet';
+import { Vector3 } from '@/types/math';
+import { Planet } from '@/types/Planet';
+import { createPlanets } from '@/utils/PlanetUtils';
 import { useGameStore } from '@/store/gameStore';
 
 export const PlanetModel = (planet: Planet, index: number) => {
   return(
-    <RigidBody type="fixed" position={Vector3.Vector3ToTHREE(planet.planetState.position)} colliders="ball" rotation={planet.planetState.rotation.eulerAnglesE} key={`planet-${index}`}>
+    <RigidBody type="fixed" position={Vector3.Vector3ToTHREE(planet.planetState.position)} colliders="ball" rotation={Vector3.Vector3ToEuler(planet.planetState.rotE)} key={`planet-${index}`}>
       <mesh>
         <sphereGeometry args={[planet.planetProps.radius, 32, 32]} />
         <meshStandardMaterial color={planet.planetProps.color} />
@@ -25,7 +26,7 @@ export const PlanetModels = () => {
   if (!planets || planets.length === 0) {
     return null; // 惑星が作成されていない場合は何も表示しない
   }
-  let planetModels: React.ReactNode[] = [];
+  const planetModels: React.ReactNode[] = [];
   for (const planet of planets) {
     if (!planet.planetState) {
       continue; // 惑星の状態が存在しない場合はスキップ

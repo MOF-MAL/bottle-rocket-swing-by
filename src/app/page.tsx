@@ -1,9 +1,8 @@
-// src/app/page.tsx
 'use client';
 
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls } from '@react-three/drei';
-import { Physics, RigidBody } from '@react-three/rapier';
+import { Physics } from '@react-three/rapier';
 import { RocketModel } from '@/components/game/RocketModel';
 import { PlanetModels } from '@/components/game/PlanetModel'; 
 

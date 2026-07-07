@@ -1,6 +1,6 @@
 import { create } from 'zustand';
-import { Rocket } from '@/utils/Rocket';
-import { Planet } from '@/utils/Planet';
+import { Rocket } from '@/types/Rocket';
+import { Planet } from '@/types/Planet';
 
 interface GameState {
     launched: boolean;

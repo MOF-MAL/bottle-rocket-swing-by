@@ -48,6 +48,22 @@ export class Vector2 {
         return Vector2.Vector2ToTHREE(lhs).dot(Vector2.Vector2ToTHREE(rhs));
     }
 
+    static RotateVector(rotation: number, v: Vector2): Vector2 {
+        const cos = Math.cos(rotation);
+        const sin = Math.sin(rotation);
+        const x = v.x * cos - v.y * sin;
+        const y = v.x * sin + v.y * cos;
+        return new Vector2(x, y);
+    }
+
+    static AngleTo(from: Vector2, to: Vector2): number {
+        const fromTHREE = Vector2.Vector2ToTHREE(from).normalize();
+        const toTHREE = Vector2.Vector2ToTHREE(to).normalize();
+        // 符号付きの角度を計算するためにatan2を使用
+        const angle = Math.atan2(toTHREE.y, toTHREE.x) - Math.atan2(fromTHREE.y, fromTHREE.x);
+        return angle;
+    }
+
     // --- 演算メソッド ---
     static add(v1: Vector2, v2: Vector2): Vector2 {
         const resultTHREE = Vector2.Vector2ToTHREE(v1).add(Vector2.Vector2ToTHREE(v2));
@@ -100,6 +116,10 @@ export class Vector3 {
 
     static Vector3ToTHREE(v: Vector3): THREE.Vector3 {
       return new THREE.Vector3(v.x, v.y, v.z);
+    }
+
+    static Vector3ToEuler(v: Vector3): THREE.Euler {
+      return new THREE.Euler(v.x, v.y, v.z);
     }
 
     static Distance(a: Vector3, b: Vector3): number {
@@ -180,9 +200,10 @@ export class Quaternion {
     }
 
     // ベクトルの方向を向くクォータニオンを返す
-    static LookAt(vec: Vector3): Quaternion {
-        const vecTHREE = Vector3.Vector3ToTHREE(vec);
-        const qTHREE = new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0, 0, 1), vecTHREE);
+    static LookAt(vec1: Vector3 = Vector3.forward, vec2: Vector3): Quaternion {
+        const vecTHREE1 = Vector3.Vector3ToTHREE(vec1).normalize();
+        const vecTHREE2 = Vector3.Vector3ToTHREE(vec2).normalize();
+        const qTHREE = new THREE.Quaternion().setFromUnitVectors(vecTHREE1, vecTHREE2);
         return Quaternion.THREEToQuaternion(qTHREE);
     }
 

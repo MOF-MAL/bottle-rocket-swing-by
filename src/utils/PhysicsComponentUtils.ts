@@ -1,11 +1,11 @@
 'use client';
 
-import { RigidBody, RapierRigidBody } from '@react-three/rapier';
+import { RapierRigidBody } from '@react-three/rapier';
 import { Vector3, Quaternion } from '@/types/math';
 
 export interface PhysicsCharactor {
     position: Vector3;
-    rotation: Quaternion;
+    rotE: Vector3;
     linearVelocity: Vector3;
     angularVelocity: Vector3;
     Translate(translation: Vector3): void;
@@ -25,10 +25,11 @@ export const PhysicsCharactor = (rbRef: React.RefObject<RapierRigidBody | null>)
             return new Vector3(pos.x, pos.y, pos.z);
         },
 
-        get rotation(): Quaternion {
-            if (!rbRef.current) return Quaternion.identity;
+        get rotE(): Vector3 {
+            if (!rbRef.current) return Vector3.zero;
             const rot = rbRef.current.rotation();
-            return new Quaternion(rot.x, rot.y, rot.z, rot.w);
+            const quaternion = new Quaternion(rot.x, rot.y, rot.z, rot.w);
+            return quaternion.eulerAnglesV;
         },
 
         get linearVelocity(): Vector3 {
