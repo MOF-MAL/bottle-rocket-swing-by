@@ -5,18 +5,18 @@ import { Planet, PlanetProps, PlanetState } from '@/types/Planet';
 // --- 惑星を作る関数 ---
 export const createPlanets = () => {
     const planets: Planet[] = [];
-    const numOfPlanets = 1; // 惑星の数を指定
+    const numOfPlanets = 2; // 惑星の数を指定
     for (let i = 0; i < numOfPlanets; i++) {
         const planetProps: PlanetProps = {
-            mass: 10**13, // 惑星の質量を設定
-            radius: 2,
+            mass: 10**13.5, // 惑星の質量を設定
+            radius: 6, // 惑星の半径を設定
             color: 'blue',
         };
         const planet: Planet = {
             planetProps: planetProps,
             planetState: {
-                position: new Vector3(20, -6.9, 0),
-                rotE: new Vector3(0, 0, 0), // 初期回転をゼロに設定
+                position: new Vector3(30 + i * 30, 30+ i * 60, 0),
+                rotE: Vector3.zero, // 初期回転をゼロに設定
                 linearVelocity: Vector3.zero,
                 angularVelocity: Vector3.zero,
             }

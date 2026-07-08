@@ -10,7 +10,7 @@ export default function Home() {
   return (
     <main style={{ width: '100vw', height: '100vh', background: '#050510' }}> {/* 宇宙っぽく少し暗い色に */}
       {/* カメラを少し引き（Z: 25）にして全体を見やすくします */}
-      <Canvas camera={{ position: [0, 0, 25], fov: 60 }}>
+      <Canvas camera={{ position: [0, 0, 50], fov: 60 }}>
         <ambientLight intensity={0.5} />
         <directionalLight position={[10, 10, 5]} intensity={1.0} />
 

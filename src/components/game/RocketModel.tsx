@@ -2,6 +2,7 @@
 
 import { RigidBody, RapierRigidBody } from '@react-three/rapier';
 import { useFrame } from '@react-three/fiber'; // ★追加: 毎フレーム処理を行うためのフック
+import { useGLTF } from '@react-three/drei';
 import { useRef, useEffect } from 'react';
 import { createRocket, updateRocketState } from '@/utils/RocketUtils'; // ★updateRocketStateを追加
 import { useGameStore } from '@/store/gameStore';
@@ -30,10 +31,11 @@ export const RocketModel = () => {
         <RigidBody
             ref={rbRef} // ★修正3: ここにrefを渡すことで、プログラムと3Dモデルが繋がる！
             type="dynamic"
-            mass={mass}
         >
             <mesh>
-                <cylinderGeometry args={[0.1, 0.1, 0.8, 32]} />
+                {/* <cylinderGeometry args={[0.1, 0.1, 0.8, 32]} /> */}
+                {/* public/rocketModel.glbを使用 */}
+                <primitive object={useGLTF('/rocketModel.glb').scene} scale={3}  rotation={[Math.PI / 2, 0, 0]} mass={mass}/>
                 <meshStandardMaterial color="white" />
             </mesh>
         </RigidBody>

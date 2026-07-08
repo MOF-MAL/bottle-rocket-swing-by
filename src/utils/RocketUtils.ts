@@ -91,7 +91,7 @@ export const initializeRocketState = (bodyMass: number, volume: number): RocketS
     curAirMass: 0,
     curMass: bodyMass,
     curPressure: 0,
-    curThrust: 0
+    curThrust: 0.7
   };
 };
 
@@ -115,8 +115,8 @@ export const updateRocketState = (rbRef: React.RefObject<RapierRigidBody | null>
   applyGravity(rbRef, rocket, position);
 
   // --- ロケットに推力を与える ---
-  const thrustMagnitude = 0.5; // 推力の大きさを取得
-  const maxSpeed = 0.01; // 最大速度を設定
+  const thrustMagnitude = rocket.rocketState.curThrust; // 推力の大きさを取得
+  const maxSpeed = 0.05; // 最大速度を設定
   const rot = Quaternion.Euler(rotation);
   const thrustDirection = Quaternion.RotateVector(rot, new Vector3(0, 1, 0)).normalized; // ロケットの上方向を推力方向とする
   const thrustForce = Vector3.mul(thrustMagnitude, thrustDirection);
@@ -149,7 +149,7 @@ export const updateRocketState = (rbRef: React.RefObject<RapierRigidBody | null>
 
 // 速度がほぼゼロでなければ、ロケットの向きを速度方向に合わせる関数
 const alignRocketWithVelocity = (rbRef: React.RefObject<RapierRigidBody | null>, rocket: Rocket, linVel: Vector3) : Vector3 => {
-  const isMoving = linVel.magnitude > 0.001; // 速度がほぼゼロでないかを判定
+  const isMoving = linVel.magnitude > 0.00001; // 速度がほぼゼロでないかを判定
   
   const velEuler = isMoving ? Vector2.AngleTo(Vector2.up, new Vector2(linVel.x, linVel.y)) : rocket.rocketState.rotZ;
   const rotation = new Vector3(0, 0, velEuler);
